@@ -1,4 +1,5 @@
 import praw
+from datetime import datetime
 
 # Initialize Reddit API connection
 reddit = praw.Reddit(
@@ -22,4 +23,9 @@ for post in posts:
     print("Score:", post.score)
     print("Comments count:", post.num_comments)
     print("URL:", post.url)
+    parsed_date = post.created_utc
+    year = parsed_date.year
+    month = parsed_date.month
+    day = parsed_date.day
+    print(f"Date Created: {month} {day} {year}")
     print("------------------------------")
