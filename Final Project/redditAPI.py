@@ -12,7 +12,7 @@ subreddit_name = 'wallstreetbets'
 subreddit = reddit.subreddit(subreddit_name)
 
 # Get posts from the subreddit
-posts = subreddit.new(limit=100)
+posts = subreddit.new(limit=1000)
 
 # Iterate over the posts and print some information
 for post in posts:
