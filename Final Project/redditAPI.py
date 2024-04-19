@@ -18,7 +18,8 @@ posts = subreddit.new(limit=None)
 # Iterate over the posts and print some information
 for post in posts:
     print("Title:", post.title)
+    print("Content Text:", post.selftext)
     print("Score:", post.score)
     print("Comments count:", post.num_comments)
     print("URL:", post.url)
-    print("-------------DR-WOLFE-----------------")
+    print("------------------------------")
