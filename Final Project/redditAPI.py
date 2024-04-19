@@ -22,10 +22,4 @@ for post in posts:
     print("Comments count:", post.num_comments)
     print("URL:", post.url)
     print("Date:", datetime.utcfromtimestamp(post.created_utc).strftime('%Y-%m-%d %H:%M:%S'))
-
-    # parsed_date = post.created_utc
-    # year = parsed_date.year
-    # month = parsed_date.month
-    # day = parsed_date.day
-    # print(f"Date Created: {month} {day} {year}")
     print("------------------------------")
