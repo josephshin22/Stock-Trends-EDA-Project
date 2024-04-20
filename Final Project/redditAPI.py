@@ -24,7 +24,7 @@ with open('wsbData','w') as csvFile:
     # Iterate over the posts and print some information
     for post in posts:
         row = f'{ datetime.utcfromtimestamp(post.created_utc).strftime('%Y-%m-%d %H:%M:%S')},{post.title},{post.selftext},{post.score},{post.num_comments}'
-        print(row)
+        # print(row)
         try:
          writer.writerow(row)
         except(UnicodeEncodeError):
