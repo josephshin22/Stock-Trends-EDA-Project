@@ -2,7 +2,7 @@ import praw
 from datetime import datetime
 import csv
 
-with open('wsbData.csv','w') as csvFile:
+with open('wsbData.csv','a') as csvFile:
     writer = csv.writer(csvFile, delimiter=',')
 
     # Initialize Reddit API connection
@@ -18,18 +18,30 @@ with open('wsbData.csv','w') as csvFile:
     # Get posts from the subreddit
     posts = subreddit.new(limit=1000)
 
-    header = 'date,title,content,score,numComments'
+    header = ['date','title','content','score','numComments']
     writer.writerow(header)
+"""
 
+I found the cause of the can't encode errors- its trying to convert emojiies to text
+Instead of dropping all those posts with emojiis, we should just drop the emoji 
+code (they all start with \)
+
+Still unsure why it isn't writing the good lines to the file
+regardless. 
+
+
+
+"""
     # Iterate over the posts and print some information
     for post in posts:
         content = post.selftext.replace(',','')
         title = post.title.replace(',','')
-        row = f'{ datetime.utcfromtimestamp(post.created_utc).strftime('%Y-%m-%d %H:%M:%S')},{title},{content},{post.score},{post.num_comments}'
+        row = [ datetime.utcfromtimestamp(post.created_utc).strftime('%Y-%m-%d %H:%M:%S'),title,content,post.score,post.num_comments]
         print(row)
         try:
-            writer.writerow(row)
+             writer.writerow(row)
         except UnicodeEncodeError as e:
             donothing = ''
             print(e)
-    writer.close()
+            print(row)
+        
