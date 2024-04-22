@@ -33,7 +33,7 @@ regardless.
 
 """
     # Iterate over the posts and print some information
-    for post in posts:
+for post in posts:
         content = post.selftext.replace(',','')
         title = post.title.replace(',','')
         row = [ datetime.utcfromtimestamp(post.created_utc).strftime('%Y-%m-%d %H:%M:%S'),title,content,post.score,post.num_comments]
