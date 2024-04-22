@@ -23,11 +23,12 @@ with open('wsbData','w') as csvFile:
 
     # Iterate over the posts and print some information
     for post in posts:
-        content = post.replace(',','')
-        row = f'{ datetime.utcfromtimestamp(post.created_utc).strftime('%Y-%m-%d %H:%M:%S')},{post.title},{content},{post.score},{post.num_comments}'
+        content = post.selftext.replace(',','')
+        title = post.title.replace(',','')
+        row = f'{ datetime.utcfromtimestamp(post.created_utc).strftime('%Y-%m-%d %H:%M:%S')},{title},{content},{post.score},{post.num_comments}'
         # print(row)
         try:
-         writer.writerow(row)
-        except(UnicodeEncodeError):
-           print()
-        
+            writer.writerow(row)
+        except UnicodeEncodeError as e:
+            donothing = ''
+            print(donothing)
