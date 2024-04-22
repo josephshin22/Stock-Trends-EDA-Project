@@ -2,8 +2,8 @@ import praw
 from datetime import datetime
 import csv
 
-with open('wsbData','w') as csvFile:
-    writer = csv.writer(csvFile, delimiter=' ')
+with open('wsbData.csv','w') as csvFile:
+    writer = csv.writer(csvFile, delimiter=',')
 
     # Initialize Reddit API connection
     reddit = praw.Reddit(
@@ -26,9 +26,9 @@ with open('wsbData','w') as csvFile:
         content = post.selftext.replace(',','')
         title = post.title.replace(',','')
         row = f'{ datetime.utcfromtimestamp(post.created_utc).strftime('%Y-%m-%d %H:%M:%S')},{title},{content},{post.score},{post.num_comments}'
-        # print(row)
+        print(row)
         try:
             writer.writerow(row)
         except UnicodeEncodeError as e:
             donothing = ''
-            print(donothing)
+            # print(e)
