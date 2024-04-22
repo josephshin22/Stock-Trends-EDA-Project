@@ -31,4 +31,4 @@ with open('wsbData.csv','w') as csvFile:
             writer.writerow(row)
         except UnicodeEncodeError as e:
             donothing = ''
-            # print(e)
+            print(e)
