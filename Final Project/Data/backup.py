@@ -31,7 +31,7 @@ with open('wsbData.csv', 'w', newline='', encoding='utf-8') as csvFile:
         # Remove commas from title
         title = post.title.replace(',', '')
         row = [
-            datetime.fromtimestamp(post.created_utc, timezone.utc).strftime('%Y-%m-%d %H:%M:%S'),
+            datetime.fromtimestamp(post.created_utc, timezone.utc).strftime('%Y-%m-%d'),
             title,
             content,
             post.score,
