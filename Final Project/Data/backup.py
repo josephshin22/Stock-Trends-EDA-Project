@@ -1,5 +1,5 @@
 import praw
-from datetime import datetime, timezone
+from datetime import datetime,timezone,timedelta
 import csv
 
 
@@ -18,13 +18,17 @@ with open('wsbData.csv', 'w', newline='', encoding='utf-8') as csvFile:
     subreddit = reddit.subreddit(subreddit_name)
 
     # Get posts from the subreddit
-    posts = subreddit.new(limit=5000)
+    # posts = subreddit.new(limit=5000)
+    posts = subreddit.search(sort='new', syntax='lucene', time_filter='all', limit=None)
+
+
 
     header = ['date', 'title', 'content', 'score', 'numComments']
     writer.writerow(header)
 
     # Iterate over the posts and write some information to the CSV file
     count = 0
+    count1=0
     for post in posts:
         # Remove commas from content
         content = post.selftext.replace(',', '')
@@ -39,6 +43,9 @@ with open('wsbData.csv', 'w', newline='', encoding='utf-8') as csvFile:
         ]
         try:
             writer.writerow(row)
+            # print(row)
+            # count1 = count1 + 1
+            # print(count1)
         except UnicodeEncodeError as e:
             count += 1
             print(e)
