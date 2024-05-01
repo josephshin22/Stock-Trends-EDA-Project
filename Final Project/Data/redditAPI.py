@@ -1,43 +1,50 @@
 import praw
-from datetime import datetime
+from datetime import datetime, timezone
 import csv
-# with open('wsbData.csv','w') as csvFile:
-csvFile =open('wsbData.csv', 'w')
-# writer = csv.writer(csvFile, delimiter=',')
 
-# Initialize Reddit API connection
-reddit = praw.Reddit(
-    client_id='o-k8HsUeNmbssImQgRy9Aw',
-    client_secret='LrEr3JNVjowGLxgQajiPBlH4lIAQSg',
-    user_agent='MyAwesomeRedditApp/1.0 by /u/Necessary-Donut-7119')
 
-# Define subreddit
-subreddit_name = 'wallstreetbets'
-subreddit = reddit.subreddit(subreddit_name)
+# Open the CSV file with encoding to handle Unicode characters
+with open('wsbData.csv', 'w', newline='', encoding='utf-8') as csvFile:
+    writer = csv.writer(csvFile, delimiter=',')
 
-# Get posts from the subreddit
-posts = subreddit.new(limit=5000)
+    # Initialize Reddit API connection
+    reddit = praw.Reddit(
+        client_id='o-k8HsUeNmbssImQgRy9Aw',
+        client_secret='LrEr3JNVjowGLxgQajiPBlH4lIAQSg',
+        user_agent='MyAwesomeRedditApp/1.0 by /u/Necessary-Donut-7119')
 
-header = ['date','title','content','score','numComments']
-# writer.writerow(header)
-# Iterate over the posts and print some information
-count =0
-for post in posts:
-    content = post.selftext.replace(',','')
-    content = content.replace('\\U','')
-# Trying to disable emojiis which mess it up
-    title = post.title.replace(',','')
-    title = title.replace('\\U','')
-    row = (f'{datetime.utcfromtimestamp(post.created_utc).strftime('%Y-%m-%d %H:%M:%S')},{title},{content},{post.score},{post.num_comments}')
-    # row = [ datetime.utcfromtimestamp(post.created_utc).strftime('%Y-%m-%d %H:%M:%S'),title,content,post.score,post.num_comments]
-    # print(row)
-    try:
-        csvFile.write(row)
-        #  writer.writerow(row)
-    except UnicodeEncodeError as e:
-        count = count +1
-        print(e)
-        print(row)
+    # Define subreddit
+    subreddit_name = 'wallstreetbets'
+    subreddit = reddit.subreddit(subreddit_name)
 
-print(f'num error lines:{count}')
-csvFile.close()
+    # Get posts from the subreddit
+    posts = subreddit.new(limit=5000)
+
+    header = ['date', 'title', 'content', 'score', 'numComments']
+    writer.writerow(header)
+
+    # Iterate over the posts and write some information to the CSV file
+    count = 0
+    for post in posts:
+        # Remove commas from content
+        content = post.selftext.replace(',', '')
+        # Remove commas from title
+        title = post.title.replace(',', '')
+        row = [
+            datetime.fromtimestamp(post.created_utc, timezone.utc).strftime('%Y-%m-%d %H:%M:%S'),
+            title,
+            content,
+            post.score,
+            post.num_comments
+        ]
+        try:
+            writer.writerow(row)
+        except UnicodeEncodeError as e:
+            count += 1
+            print(e)
+            print(row)
+
+    print(f'Number of error lines: {count}')
+
+# Print a message indicating that the script has finished execution
+print("Data has been written to wsbData.csv.")
